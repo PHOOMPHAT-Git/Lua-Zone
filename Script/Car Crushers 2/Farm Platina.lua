@@ -1,7 +1,3 @@
-_G.FarmZone = {2}
-_G.ForwardSpeed = 1000
-_G.Enable = true
-
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     if obj:IsA("LocalScript") and obj.Name == script.Name then
         obj:Destroy()
