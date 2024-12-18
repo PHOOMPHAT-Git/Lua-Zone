@@ -1,0 +1,33 @@
+_G.Enabled = false
+
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local prairieFolder = game.Workspace.Mobs.Prairie3
+
+for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
+    if obj:IsA("LocalScript") and obj.Name == script.Name then
+        obj:Destroy()
+    end
+end
+
+local function teleportOnTopOfNPC(npc)
+    if npc and npc:FindFirstChild("HumanoidRootPart") then
+        local npcPosition = npc.HumanoidRootPart.Position
+        local npcHeight = npc.HumanoidRootPart.Size.Y / 2
+        local teleportPosition = npcPosition + Vector3.new(0, npcHeight + 1, 0)
+
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+        end
+    end
+end
+
+RunService.Heartbeat:Connect(function()
+    if _G.Enabled then
+        for _, npc in pairs(prairieFolder:GetChildren()) do
+            if npc:IsA("Model") and npc:FindFirstChild("HumanoidRootPart") then
+                teleportOnTopOfNPC(npc)
+            end
+        end
+    end
+end)

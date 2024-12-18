@@ -1,0 +1,2 @@
+_G.Authorize = 'W2G1U-TS7I2-LHOI7-1NPHR'
+loadstring(game:HttpGet("https://deity.alphes.net/.lua")){"V1"}
