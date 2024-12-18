@@ -1,20 +1,3 @@
-_G.ForwardSpeed = 1000
-_G.JumpPower = 1000
-_G.brakePower = 1000
-_G.bounce = 150
-_G.fly_maxspeed = 500
-_G.Highlight_Car = true
-
-_G.keyBindings = {
-    forward = Enum.KeyCode.Q,
-    hyperforward = Enum.KeyCode.X,
-    bounce = Enum.KeyCode.G,
-    jump = Enum.KeyCode.C,
-    brake = Enum.KeyCode.E,
-    fly = Enum.KeyCode.B,
-    CarLanding = Enum.KeyCode.V
-}
-
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     if obj:IsA("LocalScript") and obj.Name == script.Name then
         obj:Destroy()
