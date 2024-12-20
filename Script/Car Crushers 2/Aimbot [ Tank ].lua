@@ -44,7 +44,6 @@ Tabs.Aimbot:AddButton({
                 {
                     Title = "Confirm",
                     Callback = function()
-                        _G.Target_Name = selectedPlayer
                         local localPlayerName = game.Players.LocalPlayer.Name
 
                         local car = workspace:WaitForChild("CarCollection"):WaitForChild(_G.Target_Name):WaitForChild("Car")
