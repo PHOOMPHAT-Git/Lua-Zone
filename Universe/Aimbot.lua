@@ -1,12 +1,3 @@
-_G.teamCheck = false
-_G.fov = 90
-_G.smoothing = 1
-_G.predictionFactor = 0.08
-_G.highlightEnabled = false
-_G.lockPart = "Head"
-_G.ToggleKey = Enum.KeyCode.E
-_G.fovVisible = false
-
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     print("Checking : " .. obj.Name)
     if obj:IsA("LocalScript") and obj.Name == script.Name then
