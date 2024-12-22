@@ -11,6 +11,9 @@ local FarmPositions = {
     [4] = CFrame.new(987.400513, 5.55040455, 10.7523813, 0.00253078411, 0.000158696421, 0.999996781, -0.000671138871, 0.999999762, -0.000156998387, -0.999996543, -0.000670739391, 0.00253089005) * CFrame.Angles(0, math.rad(0), 0)
 }
 
+_G.ScriptName = "Farm Platina"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local player = game.Players.LocalPlayer
 if not player then
     return
