@@ -1,6 +1,3 @@
-_G.open = "N"
-_G.close = "M"
-
 local UserInputService = game:GetService("UserInputService")
 local Black = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
