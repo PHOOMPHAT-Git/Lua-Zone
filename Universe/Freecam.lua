@@ -1,3 +1,6 @@
+_G.ScriptName = "Freecam"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local pi    = math.pi
 local abs   = math.abs
 local clamp = math.clamp
