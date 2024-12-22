@@ -6,6 +6,9 @@ for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     end
 end
 
+_G.ScriptName = "Aimbot"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local Toggle = false
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
