@@ -1,5 +1,3 @@
-_G.open_and_close = "H"
-
 local function getKeyCode(keyName)
     return Enum.KeyCode[keyName]
 end
