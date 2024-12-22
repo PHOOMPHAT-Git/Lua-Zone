@@ -213,80 +213,84 @@ local function teleportToCar()
 end
 
 local function bringCar_Lock()
-    local player = game.Players.LocalPlayer
-    if not player then
-        return
-    end
-
-    local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
-    if not car then
-        return
-    end
-
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRootPart then
-        return
-    end
-
-    if car.PrimaryPart then
-        car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
-        car.PrimaryPart.Anchored = false
-        
-        local existingMotor = humanoidRootPart:FindFirstChild("CarMotor")
-        if existingMotor then
-            existingMotor:Destroy()
+    if not humanoid then
+        local player = game.Players.LocalPlayer
+        if not player then
+            return
         end
-        
-        local motor = Instance.new("Motor6D")
-        motor.Name = "CarMotor"
-        motor.Part0 = humanoidRootPart
-        motor.Part1 = car.PrimaryPart
-        motor.C0 = CFrame.new(0, 0, 0)
-        motor.C1 = CFrame.new(0, 0, 0)
-        motor.Parent = humanoidRootPart
-        
-        car:SetPrimaryPartCFrame(humanoidRootPart.CFrame)
+
+        local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
+        if not car then
+            return
+        end
+
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            return
+        end
+
+        if car.PrimaryPart then
+            car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+            car.PrimaryPart.Anchored = false
+            
+            local existingMotor = humanoidRootPart:FindFirstChild("CarMotor")
+            if existingMotor then
+                existingMotor:Destroy()
+            end
+            
+            local motor = Instance.new("Motor6D")
+            motor.Name = "CarMotor"
+            motor.Part0 = humanoidRootPart
+            motor.Part1 = car.PrimaryPart
+            motor.C0 = CFrame.new(0, 0, 0)
+            motor.C1 = CFrame.new(0, 0, 0)
+            motor.Parent = humanoidRootPart
+            
+            car:SetPrimaryPartCFrame(humanoidRootPart.CFrame)
+        end
     end
 end
 
 local function bringCar_Normal()
-    local player = game.Players.LocalPlayer
-    if not player then
-        return
-    end
-
-    local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
-    if not car then
-        return
-    end
-
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRootPart then
-        return
-    end
-
-    if car.PrimaryPart then
-        car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
-        car.PrimaryPart.Anchored = false
-        
-        local existingMotor = humanoidRootPart:FindFirstChild("CarMotor")
-        if existingMotor then
-            existingMotor:Destroy()
+    if not humanoid then
+        local player = game.Players.LocalPlayer
+        if not player then
+            return
         end
-        
-        local motor = Instance.new("Motor6D")
-        motor.Name = "CarMotor"
-        motor.Part0 = humanoidRootPart
-        motor.Part1 = car.PrimaryPart
-        motor.C0 = CFrame.new(0, 0, 0)
-        motor.C1 = CFrame.new(0, 0, 0)
-        motor.Parent = humanoidRootPart
-        
-        car:SetPrimaryPartCFrame(humanoidRootPart.CFrame)
 
-        motor:Destroy()
+        local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
+        if not car then
+            return
+        end
+
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            return
+        end
+
+        if car.PrimaryPart then
+            car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+            car.PrimaryPart.Anchored = false
+            
+            local existingMotor = humanoidRootPart:FindFirstChild("CarMotor")
+            if existingMotor then
+                existingMotor:Destroy()
+            end
+            
+            local motor = Instance.new("Motor6D")
+            motor.Name = "CarMotor"
+            motor.Part0 = humanoidRootPart
+            motor.Part1 = car.PrimaryPart
+            motor.C0 = CFrame.new(0, 0, 0)
+            motor.C1 = CFrame.new(0, 0, 0)
+            motor.Parent = humanoidRootPart
+            
+            car:SetPrimaryPartCFrame(humanoidRootPart.CFrame)
+
+            motor:Destroy()
+        end
     end
 end
 
