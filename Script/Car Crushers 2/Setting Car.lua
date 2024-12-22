@@ -213,7 +213,7 @@ local function teleportToCar()
 end
 
 local function bringCar_Lock()
-    if not humanoid then
+    if not humanoid.Sit then
         local player = game.Players.LocalPlayer
         if not player then
             return
@@ -253,7 +253,7 @@ local function bringCar_Lock()
 end
 
 local function bringCar_Normal()
-    if not humanoid then
+    if not humanoid.Sit then
         local player = game.Players.LocalPlayer
         if not player then
             return
