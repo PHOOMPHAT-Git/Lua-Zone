@@ -201,6 +201,61 @@ local function dashBackward()
     end
 end
 
+local function spawnCar()
+    local player = game.Players.LocalPlayer
+    local vehicleName = workspace:FindFirstChild(player.Name) and workspace[player.Name][player.Name]:FindFirstChild("VehicleName") and workspace[player.Name][player.Name].VehicleName.Value or "DefaultVehicle"
+
+    local args = {
+        [1] = "Dealership",
+        [2] = vehicleName,
+        [3] = true
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("rE"):WaitForChild("Vehicle"):WaitForChild("Spawning"):WaitForChild("RequestVehicleSpawn"):FireServer(unpack(args))
+end
+
+local function teleportToCar()
+    local args1 = {
+        [1] = "VehicleSeat"
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("rF"):WaitForChild("TeleportPlr"):InvokeServer(unpack(args1))
+end
+
+local function bringCar()
+    local player = game.Players.LocalPlayer
+    if not player then
+        return
+    end
+
+    local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
+    if not car then
+        return
+    end
+
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then
+        return
+    end
+
+    if car.PrimaryPart then
+        car.Parent = character
+        car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+        car.PrimaryPart.Anchored = false
+        
+        local motor = Instance.new("Motor6D")
+        motor.Name = "CarMotor"
+        motor.Part0 = humanoidRootPart
+        motor.Part1 = car.PrimaryPart
+        motor.C0 = CFrame.new(0, 0, 0)
+        motor.C1 = CFrame.new(0, 0, 0)
+        motor.Parent = humanoidRootPart
+        
+        car:SetPrimaryPartCFrame(humanoidRootPart.CFrame)
+    end
+end
+
 local isCPressed = false
 
 userInputService.InputBegan:Connect(function(input, gameProcessed)
@@ -214,6 +269,12 @@ userInputService.InputBegan:Connect(function(input, gameProcessed)
             dashBackward()
         elseif input.KeyCode == _G.keyBindings.jump then
             dashUpward()
+        elseif input.KeyCode == _G.CarHyperMode.spawnCar then
+            spawnCar()
+        elseif input.KeyCode == _G.CarHyperMode.teleportToCar then
+            teleportToCar()
+        elseif input.KeyCode == _G.CarHyperMode.bringCar then
+            bringCar()
         elseif input.KeyCode == _G.keyBindings.brake then
             isCPressed = true
             while isCPressed do
@@ -305,7 +366,6 @@ local flying = false
 local deb = true
 local ctrl = {f = 0, b = 0, l = 0, r = 0}
 local lastctrl = {f = 0, b = 0, l = 0, r = 0}
-local maxspeed = 50
 local speed = 0
 
 function Fly()
@@ -322,9 +382,9 @@ function Fly()
         plr.Character.Humanoid.PlatformStand = true
 
         if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
-            speed = speed + 0.5 + (speed / maxspeed)
-            if speed > maxspeed then
-                speed = maxspeed
+            speed = speed + 0.5 + (speed / _G.fly_maxspeed)
+            if speed > _G.fly_maxspeed then
+                speed = _G.fly_maxspeed
             end
         elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
             speed = speed - 1
@@ -346,7 +406,7 @@ function Fly()
             bv.velocity = Vector3.new(0, 0.1, 0)
         end
 
-        bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed / maxspeed), 0, 0)
+        bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed / _G.fly_maxspeed), 0, 0)
     until not flying
 
     ctrl = {f = 0, b = 0, l = 0, r = 0}
@@ -358,7 +418,7 @@ function Fly()
 end
 
 mouse.KeyDown:connect(function(key)
-    if key:lower() == _G.keyBindings.fly then
+    if key:lower() == _G.CarHyperMode.fly then
         if flying then
             flying = false
         else
@@ -393,7 +453,7 @@ Fly()
 userInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
     if input.UserInputType == Enum.UserInputType.Keyboard then
-        if input.KeyCode == _G.keyBindings.fly then
+        if input.KeyCode == _G.CarHyperMode.fly then
             if flying then
                 flying = false
             else
