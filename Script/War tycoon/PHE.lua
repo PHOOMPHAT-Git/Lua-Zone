@@ -1,6 +1,3 @@
-_G.AutoFarm = true
-_G.AutoRebirth = true
-
 local scriptName = "AutoFarm_PHERasha"
 
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
