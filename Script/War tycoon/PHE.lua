@@ -43,7 +43,10 @@ while true do
         player.Character:SetPrimaryPartCFrame(Oil2.CFrame * CFrame.new(0, 10, 0))
         wait(0.1)
 
-        game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
+        for i = 1, 200000 do
+            game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
+            warn("Rebirth")
+        end
 
         print("AutoRebirth completed.")
     end
