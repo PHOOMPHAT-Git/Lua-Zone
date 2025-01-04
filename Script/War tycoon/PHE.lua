@@ -42,11 +42,6 @@ while true do
         wait(0.1)
     elseif barProgressAmount.Text == "100%" and _G.AutoRebirth then
         game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
-
-        for i = 1, 200000 do
-            warn("Rebirth")
-        end
-
         print("AutoRebirth completed.")
     end
 
