@@ -45,6 +45,7 @@ while true do
 
         for i = 1, 200000 do
             warn("Rebirth")
+            wait(0.1)
         end
 
         print("AutoRebirth completed.")
