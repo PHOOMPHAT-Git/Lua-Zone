@@ -40,7 +40,7 @@ while true do
         local Oil2 = workspace.Tycoon.Tycoons.Alpha.UnpurchasedButtons["Oil 2"].Gradient
         player.Character:SetPrimaryPartCFrame(Oil2.CFrame * CFrame.new(0, 10, 0))
         wait(0.1)
-
+    elseif barProgressAmount.Text == "100%" and _G.AutoRebirth then
         game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
 
         for i = 1, 200000 do
