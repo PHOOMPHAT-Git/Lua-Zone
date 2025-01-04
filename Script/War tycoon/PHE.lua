@@ -1,3 +1,6 @@
+_G.AutoFarm = true
+_G.AutoRebirth = true
+
 local scriptName = "AutoFarm_PHERasha"
 
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
@@ -43,8 +46,9 @@ while true do
         player.Character:SetPrimaryPartCFrame(Oil2.CFrame * CFrame.new(0, 10, 0))
         wait(0.1)
 
+        game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
+
         for i = 1, 200000 do
-            game:GetService("ReplicatedStorage"):WaitForChild("RebirthEVT"):FireServer()
             warn("Rebirth")
         end
 
