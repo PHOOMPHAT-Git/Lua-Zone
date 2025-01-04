@@ -20,11 +20,9 @@ local teamValue = game:GetService("Players").LocalPlayer.Team.Name
 local tycoonButtons = workspace.Tycoon.Tycoons[teamValue].UnpurchasedButtons
 local VirtualUser = game:GetService("VirtualUser")
 
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new())
-    print("Anti-AFK activated!")
-end)
+VirtualUser:CaptureController()
+VirtualUser:ClickButton2(Vector2.new())
+print("Anti-AFK activated!")
 
 while true do
     if barProgressAmount.Text == "0%" and _G.AutoRebirth then
