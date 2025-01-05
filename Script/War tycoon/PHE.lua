@@ -60,7 +60,6 @@ while true do
                 if mesh and mesh:IsA("BasePart") and mesh.Color == Color3.fromRGB(0, 255, 0) then
                     isCashHologramGreen = true
                     player.Character:SetPrimaryPartCFrame(mesh.CFrame)
-                    print("Warping to CashHologram.Mesh (Green)!")
                     wait(1)
                     foundHologram = true
                     break
@@ -70,7 +69,6 @@ while true do
 
         if not foundHologram then
             isCashHologramGreen = false
-            print("No green CashHologram found.")
         end
 
         if not isCashHologramGreen then
