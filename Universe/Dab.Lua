@@ -1,5 +1,4 @@
 local animationId = "rbxassetid://9794385006"
-
 local animation = Instance.new("Animation")
 animation.AnimationId = animationId
 
@@ -13,6 +12,16 @@ if not humanoid then
 end
 
 local animationTrack = humanoid:LoadAnimation(animation)
-animationTrack:Play()
-wait(1)
-animationTrack:Stop()
+
+local UserInputService = game:GetService("UserInputService")
+local key = _G.Dab
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+
+    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == key then
+        animationTrack:Play()
+        wait(1)
+        animationTrack:Stop()
+    end
+end)
