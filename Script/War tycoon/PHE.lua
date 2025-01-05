@@ -52,20 +52,25 @@ while true do
     elseif _G.AutoFarm then
         local targetColors = {Color3.fromRGB(0, 255, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(4, 175, 235)}
         local foundNeon = false
+        local foundHologram = false
 
-        local cashHologram = workspace:FindFirstChild("CashHologram")
-        if cashHologram and cashHologram:FindFirstChild("Mesh") then
-            local mesh = cashHologram.Mesh
-            if mesh.Color == Color3.fromRGB(0, 255, 0) then
-                isCashHologramGreen = true
-                player.Character:SetPrimaryPartCFrame(mesh.CFrame)
-                print("Warping to CashHologram.Mesh (Green)!")
-                wait(1)
-            else
-                isCashHologramGreen = false
+        for _, descendant in pairs(workspace:GetDescendants()) do
+            if descendant:IsA("Model") and descendant.Name == "CashHologram" then
+                local mesh = descendant:FindFirstChild("Mesh")
+                if mesh and mesh:IsA("BasePart") and mesh.Color == Color3.fromRGB(0, 255, 0) then
+                    isCashHologramGreen = true
+                    player.Character:SetPrimaryPartCFrame(mesh.CFrame)
+                    print("Warping to CashHologram.Mesh (Green)!")
+                    wait(1)
+                    foundHologram = true
+                    break
+                end
             end
-        else
+        end
+
+        if not foundHologram then
             isCashHologramGreen = false
+            print("No green CashHologram found.")
         end
 
         if not isCashHologramGreen then
@@ -75,6 +80,26 @@ while true do
                     local broken = largeOil:FindFirstChild("Broken")
                     if broken and broken.Value == true then
                         local electricalBox = largeOil:FindFirstChild("ElectricalBox")
+                        if electricalBox and electricalBox:FindFirstChild("Effect") then
+                            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(electricalBox.Effect.CFrame)
+                            wait(0.1)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                            wait(3)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
+                            if broken.Value == false then
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+
+            for i = 1, 3 do
+                local OilDrill = workspace.Tycoon.Tycoons[teamValue].PurchasedObjects:FindFirstChild("Oil Drill " .. i)
+                if OilDrill then
+                    local broken = OilDrill:FindFirstChild("Broken")
+                    if broken and broken.Value == true then
+                        local electricalBox = OilDrill:FindFirstChild("ElectricalBox")
                         if electricalBox and electricalBox:FindFirstChild("Effect") then
                             game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(electricalBox.Effect.CFrame)
                             wait(0.1)
