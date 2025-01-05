@@ -21,6 +21,8 @@ VirtualUser:CaptureController()
 VirtualUser:ClickButton2(Vector2.new())
 print("Anti-AFK activated!")
 
+local isCashHologramGreen = false
+
 while true do
     if barProgressAmount.Text == "0%" and _G.AutoRebirth then
         print("Starting AutoRebirth...")
@@ -37,7 +39,7 @@ while true do
         local cashCollector = workspace.Tycoon.Tycoons[teamValue].Essentials.CashCollector
         player.Character:SetPrimaryPartCFrame(cashCollector.CFrame * CFrame.new(0, 0, 0))
         wait(0.5)
-        local Oil2 = workspace.Tycoon.Tycoons.Alpha.UnpurchasedButtons["Oil 2"].Gradient
+        local Oil2 = workspace.Tycoon.Tycoons[teamValue].UnpurchasedButtons["Oil 2"].Gradient
         player.Character:SetPrimaryPartCFrame(Oil2.CFrame * CFrame.new(0, 10, 0))
         wait(0.1)
     elseif barProgressAmount.Text == "100%" and _G.AutoRebirth then
@@ -51,40 +53,57 @@ while true do
         local targetColors = {Color3.fromRGB(0, 255, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(4, 175, 235)}
         local foundNeon = false
 
-        for i = 1, 6 do
-            local largeOil = workspace.Tycoon.Tycoons[teamValue].PurchasedObjects:FindFirstChild("Large Oil " .. i)
-            if largeOil then
-                local broken = largeOil:FindFirstChild("Broken")
-                if broken and broken.Value == true then
-                    local electricalBox = largeOil:FindFirstChild("ElectricalBox")
-                    if electricalBox and electricalBox:FindFirstChild("Effect") then
-                        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(electricalBox.Effect.CFrame)
-                        wait(0.1)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                        wait(3)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
-                        if broken.Value == false then
-                            break
+        local cashHologram = workspace:FindFirstChild("CashHologram")
+        if cashHologram and cashHologram:FindFirstChild("Mesh") then
+            local mesh = cashHologram.Mesh
+            if mesh.Color == Color3.fromRGB(0, 255, 0) then
+                isCashHologramGreen = true
+                player.Character:SetPrimaryPartCFrame(mesh.CFrame)
+                print("Warping to CashHologram.Mesh (Green)!")
+                wait(1)
+            else
+                isCashHologramGreen = false
+            end
+        else
+            isCashHologramGreen = false
+        end
+
+        if not isCashHologramGreen then
+            for i = 1, 6 do
+                local largeOil = workspace.Tycoon.Tycoons[teamValue].PurchasedObjects:FindFirstChild("Large Oil " .. i)
+                if largeOil then
+                    local broken = largeOil:FindFirstChild("Broken")
+                    if broken and broken.Value == true then
+                        local electricalBox = largeOil:FindFirstChild("ElectricalBox")
+                        if electricalBox and electricalBox:FindFirstChild("Effect") then
+                            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(electricalBox.Effect.CFrame)
+                            wait(0.1)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                            wait(3)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
+                            if broken.Value == false then
+                                break
+                            end
                         end
                     end
                 end
             end
-        end
 
-        if not foundNeon then
-            for _, button in pairs(tycoonButtons:GetChildren()) do
-                local neon = button:FindFirstChild("Neon")
-                if neon then
-                    for _, color in pairs(targetColors) do
-                        if neon.Color == color then
-                            player.Character:SetPrimaryPartCFrame(neon.CFrame * CFrame.new(0, 10, 0))
-                            foundNeon = true
-                            break
+            if not foundNeon then
+                for _, button in pairs(tycoonButtons:GetChildren()) do
+                    local neon = button:FindFirstChild("Neon")
+                    if neon then
+                        for _, color in pairs(targetColors) do
+                            if neon.Color == color then
+                                player.Character:SetPrimaryPartCFrame(neon.CFrame * CFrame.new(0, 10, 0))
+                                foundNeon = true
+                                break
+                            end
                         end
                     end
-                end
-                if foundNeon then
-                    break
+                    if foundNeon then
+                        break
+                    end
                 end
             end
         end
