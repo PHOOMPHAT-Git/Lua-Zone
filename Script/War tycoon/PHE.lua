@@ -1,4 +1,4 @@
-local scriptName = "AutoFarm_PHERasha"
+local scriptName = "PHERasha_" .. math.random(1, 1000)
 
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     if obj:IsA("LocalScript") and obj.Name == scriptName then
