@@ -46,14 +46,6 @@ local Potion = {
     }
 }
 
-local args = {
-    [1] = "6ec1f404fd3b419c8511c33c62f0445c",
-    [2] = 10
-}
-
-game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("UpgradeEnchantsMachine_Activate"):InvokeServer(unpack(args))
-
-
 local potionIndex = 1
 local Up_Criticals_enchantsIndex = 1
 local Criticals_enchantsIndex = 1
