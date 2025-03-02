@@ -1,30 +1,3 @@
-_G.AutoFarm = {
-    Use_TNT = true,
-    VIP = true,
-
-    Farm_Star_Settings = {
-        Farm_1_star = {
-            Start_Farm = true
-        }
-    }
-}
-
-_G.Area_Settings = {
-    Area = "Golden Road",
-    Area_Position = "728.9641723632812, 16.239351272583008, 3218.001953125",
-
-    Diamond_Area = "Spawn",
-    Diamond_Area_Position = "215.265625, 27.2952557, -585.692078"
-}
-
-_G.Enchants_And_Potions_Setting = { -- Max VI
-    Diamond_Enchants_Equip = {"VI"},
-    Criticals_Enchants_Equip = {"VI"},
-
-    Criticals_Upgrade_Enchant = {"III"},
-    Lucky_Upgrade_Potion = {"II"}
-}
-
 for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
     if obj:IsA("LocalScript") and obj.Name == script.Name then
         obj:Destroy()
