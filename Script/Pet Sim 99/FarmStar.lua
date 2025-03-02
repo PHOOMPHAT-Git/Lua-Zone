@@ -8,42 +8,40 @@ local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("GoalsSide")
 local title = gui.Frame.Quests.QuestsGradient.QuestsHolder.Easy.Title
 
-local Enchants = {
-    Diamond = {
-        ["I"] = "50d9252be1014c62af37d14479cc7431",
-        ["II"] = "819df5e8ff1e453ebc253de63dae9c74",
-        ["III"] = "8abd63ad9c6d47e6bc7c976d7a0ce7c4",
-        ["IV"] = "129608e807eb4206a5a184ec3a136b9a",
-        ["V"] = "e6d31da0e3494510b3db1f978d9027e1",
-        ["VI"] = "3afae553acf749809153026cce234afa"
-    },
-    Criticals = {
-        ["I"] = "802dd7f0e4c6455fbd93c01b1269dc68",
-        ["II"] = "b96d3d7f8751413ba3fb7f0bab241def",
-        ["III"] = "a47aee343f48401fb2eefdfd84a41298",
-        ["IV"] = "43167b65e0564594959afde204fb8112",
-        ["V"] = "6e4f69970be14dd7910a0a047ddf5595",
-        ["VI"] = "3113e2f77b7049a89d89f5c951e8549f"
-    }
+local Diamond_Enchants_Select = {
+    ["I"] = "50d9252be1014c62af37d14479cc7431",
+    ["II"] = "819df5e8ff1e453ebc253de63dae9c74",
+    ["III"] = "8abd63ad9c6d47e6bc7c976d7a0ce7c4",
+    ["IV"] = "129608e807eb4206a5a184ec3a136b9a",
+    ["V"] = "e6d31da0e3494510b3db1f978d9027e1",
+    ["VI"] = "3afae553acf749809153026cce234afa"
 }
 
-local Potion = {
-    Lucky = {
-        ["I"] = "ab126a49ce874532b6d49ec1bb65e92a",
-        ["II"] = "25605eed688c41d5b8d1f35bf338c292",
-        ["III"] = "424cca285a994fb5903d85a7614a862e",
-        ["IV"] = "774235bb15c34abcb2a091ff4d0bf63e",
-        ["V"] = "26f0efb5e9664fb0a2d063e4614f6808",
-        ["VI"] = "ea6fe891a0484345b1f7c40f1ecb42fa"
-    },
-    Coin = {
-        ["I"] = "e09b63e022854a029c113b9f242dea58",
-        ["II"] = "6ec1f404fd3b419c8511c33c62f0445c",
-        ["III"] = "269187656dea4a3fa317237c1306f823",
-        ["IV"] = "4e56db11524f4fc09aa95f05dc78c585",
-        ["V"] = "43b70618c0e04a3ebbda452176acf1a3",
-        ["VI"] = "7146d3e0097c4dd698a2b8f736c4fefa"
-    }
+local Criticals_Enchants_Select = {
+    ["I"] = "802dd7f0e4c6455fbd93c01b1269dc68",
+    ["II"] = "b96d3d7f8751413ba3fb7f0bab241def",
+    ["III"] = "a47aee343f48401fb2eefdfd84a41298",
+    ["IV"] = "43167b65e0564594959afde204fb8112",
+    ["V"] = "6e4f69970be14dd7910a0a047ddf5595",
+    ["VI"] = "3113e2f77b7049a89d89f5c951e8549f"
+}
+
+local Criticals_Upgrade_Enchants_Select = {
+    ["I"] = "802dd7f0e4c6455fbd93c01b1269dc68",
+    ["II"] = "b96d3d7f8751413ba3fb7f0bab241def",
+    ["III"] = "a47aee343f48401fb2eefdfd84a41298",
+    ["IV"] = "43167b65e0564594959afde204fb8112",
+    ["V"] = "6e4f69970be14dd7910a0a047ddf5595",
+    ["VI"] = "3113e2f77b7049a89d89f5c951e8549f"
+}
+
+local Lucky_Position_Select = {
+    ["I"] = "ab126a49ce874532b6d49ec1bb65e92a",
+    ["II"] = "25605eed688c41d5b8d1f35bf338c292",
+    ["III"] = "424cca285a994fb5903d85a7614a862e",
+    ["IV"] = "774235bb15c34abcb2a091ff4d0bf63e",
+    ["V"] = "26f0efb5e9664fb0a2d063e4614f6808",
+    ["VI"] = "ea6fe891a0484345b1f7c40f1ecb42fa"
 }
 
 local potionIndex = 1
@@ -51,20 +49,10 @@ local Up_Criticals_enchantsIndex = 1
 local Criticals_enchantsIndex = 1
 local Diamond_enchantsIndex = 1
 
-local DiamondselectedEnchant = _G.Enchants_And_Potions_Settings.Diamond_Enchants_Equip[Diamond_enchantsIndex]
-local CriticalsselectedEnchant = _G.Enchants_And_Potions_Settings.Criticals_Enchants_Equip[Criticals_enchantsIndex]
-
-local selectedEnchantType = _G.Enchants_And_Potions_Settings.Upgrade_Enchant_Select.Criticals.Use and "Criticals" or "Diamond"
-local selectedEnchant = (selectedEnchantType == "Criticals") and _G.Enchants_And_Potions_Settings.Upgrade_Enchant_Select.Criticals.Upgrade[1] or _G.Enchants_And_Potions_Settings.Upgrade_Enchant_Select.Diamond.Upgrade[1]
-if selectedEnchant and Enchants[selectedEnchantType] and Enchants[selectedEnchantType][selectedEnchant] then
-    local enchantValue = Enchants[selectedEnchantType][selectedEnchant]
-end
-
-local selectedPotionType = _G.Enchants_And_Potions_Settings.Upgrade_Potion_Select.Lucky.Use and "Lucky" or "Coin"
-local selectedPotion = (selectedPotionType == "Lucky") and _G.Enchants_And_Potions_Settings.Upgrade_Potion_Select.Lucky.Upgrade[potionIndex] or _G.Enchants_And_Potions_Settings.Upgrade_Potion_Select.Coin.Upgrade[potionIndex]
-if selectedPotion and Potion[selectedPotionType] and Potion[selectedPotionType][selectedPotion] then
-    local potionValue = Potion[selectedPotionType][selectedPotion]
-end
+local DiamondselectedEnchant = _G.Enchants_And_Potions_Setting.Diamond_Enchants_Equip[Diamond_enchantsIndex]
+local CriticalsselectedEnchant = _G.Enchants_And_Potions_Setting.Criticals_Enchants_Equip[Criticals_enchantsIndex]
+local Up_CriticalsselectedEnchant = _G.Enchants_And_Potions_Setting.Criticals_Upgrade_Enchant[Up_Criticals_enchantsIndex]
+local selectedPotion = _G.Enchants_And_Potions_Setting.Lucky_Upgrade_Potion[potionIndex]
 
 local function parsePosition(positionString)
     local position = {}
@@ -83,7 +71,8 @@ while true do
             wait(0.5)
 
             local potions = string.match(title.Text, "%d+")
-            local potionValue = selectedPotion
+
+            local potionValue = Lucky_Position_Select[selectedPotion]
 
             local args = {
                 [1] = potionValue,
@@ -96,7 +85,8 @@ while true do
             wait(0.5)
 
             local enchants = string.match(title.Text, "%d+")
-            local enchantValue = selectedEnchant
+
+            local enchantValue = Criticals_Upgrade_Enchants_Select[Up_CriticalsselectedEnchant]
 
             local args = {
                 [1] = enchantValue,
