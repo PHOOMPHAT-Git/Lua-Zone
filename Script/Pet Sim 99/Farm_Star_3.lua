@@ -135,7 +135,7 @@ _G.currentLoop = coroutine.create(function()
                     task.wait(0.5)
 
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(diamond_area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Restore"):FireServer()
 
@@ -154,7 +154,7 @@ _G.currentLoop = coroutine.create(function()
                     task.wait(0.5)
 
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Restore"):FireServer()
 
@@ -224,7 +224,7 @@ _G.currentLoop = coroutine.create(function()
                 task.wait(0.5)
 
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                task.wait(2.5)
+                task.wait(0.5)
 
                 game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Restore"):FireServer()
 
@@ -255,7 +255,7 @@ _G.currentLoop = coroutine.create(function()
                     end
                 elseif title.Text:match("Break %d+%.?%d*k? breakables in best area") or title.Text == "Break a superior mini-chest in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     if phe_auto_farm.Use_TNT then
                         for i = 1, 1 do
@@ -265,7 +265,7 @@ _G.currentLoop = coroutine.create(function()
                     end
                 elseif string.match(title.Text, "^Break%s+%d+%s+mini%-chests in best area$") or title.Text == "Break a mini-chest in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     if phe_auto_farm.Use_TNT then
                         for i = 1, 1 do
@@ -275,7 +275,7 @@ _G.currentLoop = coroutine.create(function()
                     end
                 elseif string.match(title.Text, "^Break%s%d*%s*pinatas in best area$") or title.Text == "Break a pinata in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     local pinatas = {
                         [1] = "78fd12a69ef4411ca76f4f0f8694cebc" -- Pinatas
@@ -284,7 +284,7 @@ _G.currentLoop = coroutine.create(function()
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("MiniPinata_Consume"):InvokeServer(unpack(pinatas))
                 elseif string.match(title.Text, "^Break%s%d*%s*lucky block event in best area$") or title.Text == "Break a lucky block event in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
-                    task.wait(2.5)
+                    task.wait(0.5)
 
                     local lucky_block = {
                         [1] = "7b2a4aa7e05146ee813047273032fd35" -- Lucky Block
@@ -294,6 +294,7 @@ _G.currentLoop = coroutine.create(function()
                 end
             elseif string.match(title.Text, "^Hatch%s%d*%s*of your best eggs$") then
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(phe_egg_position)
+                task.wait(0.5)
 
                 for i = 1, 1 do
                     local egg = {
