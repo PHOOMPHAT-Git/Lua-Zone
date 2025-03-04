@@ -113,6 +113,7 @@ _G.currentLoop = coroutine.create(function()
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Ranks_ClaimReward"):FireServer(unpack(rank_reward))
                     task.wait(0.5)
                 end
+                task.wait(5)
             elseif title.Text == "Quest Complete!" then
                 print("Quest Complete!")
                 if title_Count.Text == tostring(_G.AutoFarm.All_Rewards) then
@@ -129,6 +130,7 @@ _G.currentLoop = coroutine.create(function()
                         task.wait(0.5)
                     end
                 end
+                task.wait(5)
             elseif title.Text:match("Break %d+%.?%d*k? diamond breakables") or title.Text:match("Earn %d+%.?%d*k? Diamonds") then
                 if phe_auto_farm.VIP then
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_UnequipAll"):FireServer()
@@ -149,6 +151,7 @@ _G.currentLoop = coroutine.create(function()
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("FlexibleFlags_Consume"):InvokeServer(unpack(diamond_flag))
                         end
                     end
+                    task.wait(5)
                 else
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_UnequipAll"):FireServer()
                     task.wait(0.5)
@@ -175,6 +178,7 @@ _G.currentLoop = coroutine.create(function()
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("TNT_Crate_Consume"):InvokeServer()
                         end
                     end
+                    task.wait(5)
                 end
             elseif string.match(title.Text, "^Use%s%d*%s*Tier IV Potions$") or string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Potions$") or string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Enchants$") then
                 if string.match(title.Text, "^Use%s%d*%s*Tier IV Potions$") then
@@ -187,6 +191,7 @@ _G.currentLoop = coroutine.create(function()
                     if Potions_Data[potion_type] and Potions_Data[potion_type][potion_tier] then
                         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Potions: Consume"):FireServer(Potions_Data[potion_type][potion_tier], tonumber(use_potion))
                     end
+                    task.wait(2.5)
                 elseif string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Enchants$") or string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Potions$") then
                     if string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Enchants$") then
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(805.256714, 16.5634251, 262.006165)
@@ -200,6 +205,7 @@ _G.currentLoop = coroutine.create(function()
                         if Enchants_Data[enchant_type] and Enchants_Data[enchant_type][enchant_tier] then
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("UpgradeEnchantsMachine_Activate"):InvokeServer(Enchants_Data[enchant_type][enchant_tier], tonumber(upgrade_enchant))
                         end
+                        task.wait(2.5)
                     elseif string.match(title.Text, "^Upgrade to%s%d*%s*Tier III Potions$") then
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(805.256714, 16.5634251, 262.006165)
                         task.wait(2.5)
@@ -212,6 +218,7 @@ _G.currentLoop = coroutine.create(function()
                         if Potions_Data[potion_type] and Potions_Data[potion_type][potion_tier] then
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("UpgradePotionsMachine_Activate"):InvokeServer(Potions_Data[potion_type][potion_tier], tonumber(upgrade_potions))
                         end
+                        task.wait(2.5)
                     end
                 end
             elseif string.match(title.Text, "^Break%s%d*%s*coin jars in best area$") or title.Text == "Break a coin jar in best area"
@@ -244,6 +251,7 @@ _G.currentLoop = coroutine.create(function()
                             end
                         end
                     end
+                    task.wait(5)
                 elseif string.match(title.Text, "^Break%s%d*%s*comets in best area$") or title.Text == "Break a comet in best area" then
                     for i = 1, 1 do
                         local comet = {
@@ -253,6 +261,7 @@ _G.currentLoop = coroutine.create(function()
                         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Comet_Spawn"):InvokeServer(unpack(comet))
                         task.wait(7)
                     end
+                    task.wait(5)
                 elseif title.Text:match("Break %d+%.?%d*k? breakables in best area") or title.Text == "Break a superior mini-chest in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
                     task.wait(0.5)
@@ -263,6 +272,7 @@ _G.currentLoop = coroutine.create(function()
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("TNT_Crate_Consume"):InvokeServer()
                         end
                     end
+                    task.wait(5)
                 elseif string.match(title.Text, "^Break%s+%d+%s+mini%-chests in best area$") or title.Text == "Break a mini-chest in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
                     task.wait(0.5)
@@ -273,6 +283,7 @@ _G.currentLoop = coroutine.create(function()
                             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("TNT_Crate_Consume"):InvokeServer()
                         end
                     end
+                    task.wait(5)
                 elseif string.match(title.Text, "^Break%s%d*%s*pinatas in best area$") or title.Text == "Break a pinata in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
                     task.wait(0.5)
@@ -282,6 +293,7 @@ _G.currentLoop = coroutine.create(function()
                     }
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("MiniPinata_Consume"):InvokeServer(unpack(pinatas))
+                    task.wait(5)
                 elseif string.match(title.Text, "^Break%s%d*%s*lucky block event in best area$") or title.Text == "Break a lucky block event in best area" then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(area_position)
                     task.wait(0.5)
@@ -291,6 +303,7 @@ _G.currentLoop = coroutine.create(function()
                     }
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("MiniLuckyBlock_Consume"):InvokeServer(unpack(lucky_block))
+                    task.wait(5)
                 end
             elseif string.match(title.Text, "^Hatch%s%d*%s*of your best eggs$") then
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = parsePosition(phe_egg_position)
@@ -322,6 +335,7 @@ _G.currentLoop = coroutine.create(function()
                     }
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("RainbowMachine_Activate"):InvokeServer(unpack(make_rainbow))
+                    task.wait(5)
                 elseif string.match(title.Text, "^Make%s(%d+)%s*golden pets from best egg$") then
                     local golden = string.match(title.Text, "%d+")
                     print("Make Golden Amount: " .. golden)  -- Debugging
@@ -339,6 +353,7 @@ _G.currentLoop = coroutine.create(function()
                     }
 
                     game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("GoldMachine_Activate"):InvokeServer(unpack(make_golden))
+                    task.wait(5)
                 end
             end
         end
