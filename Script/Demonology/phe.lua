@@ -535,7 +535,7 @@ highlightGhostorbBtn.MouseButton1Click:Connect(function()
             local hl = Instance.new("Highlight", orb)
             hl.Adornee      = orb
             hl.FillColor    = Color3.new(1,1,1)
-            hl.OutlineColor = Color3.fromRGB(255,0,0)
+            hl.OutlineColor = Color3.new(0.058824, 0.968627, 1.000000)
             addGhostOrbBillboard()
         end
     end
