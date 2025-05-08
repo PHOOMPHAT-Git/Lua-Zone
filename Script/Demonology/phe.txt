@@ -1,0 +1,583 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local root = character:WaitForChild("HumanoidRootPart")
+local coreGui = game:GetService("CoreGui")
+local workspace = game:GetService("Workspace")
+
+local lighting = game:GetService("Lighting")
+
+local ghost = workspace:WaitForChild("Ghost")
+local map = workspace:WaitForChild("Map")
+local rooms = map:WaitForChild("Rooms")
+local handprints = workspace:WaitForChild("Handprints")
+local itemfolder = workspace:FindFirstChild("Items")
+
+local existingGui = coreGui:FindFirstChild("GhostAttributesDisplay")
+if existingGui then existingGui:Destroy() end
+
+local OpenGuiGui = coreGui:FindFirstChild("OpenGuiButton")
+if OpenGuiGui then OpenGuiGui:Destroy() end
+
+local attributes = {"Age", "Headless", "Hunting", "InLaser", "Gender", "FavoriteRoom", "CurrentRoom"}
+local textLabels = {}
+
+local gui = Instance.new("ScreenGui", coreGui)
+gui.Name = "GhostAttributesDisplay"
+
+local handprintLabel = Instance.new("TextLabel")
+handprintLabel.Size = UDim2.new(0, 300, 0, 25)
+handprintLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 2))
+handprintLabel.BackgroundTransparency = 0
+handprintLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+handprintLabel.TextColor3 = Color3.new(1.000000, 1.000000, 1.000000)
+handprintLabel.TextScaled = true
+handprintLabel.Font = Enum.Font.SourceSans
+handprintLabel.Text = "Handprints : Scanning..."
+handprintLabel.Parent = gui
+
+local handprintFound = false
+local function checkHandprints()
+    if not handprintFound and handprints then
+        for _, obj in ipairs(handprints:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                handprintFound = true
+                handprintLabel.Text = "Handprints : true"
+                handprintLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+                break
+            end
+        end
+    end
+    if not handprintFound then
+        handprintLabel.Text = "Handprints : false"
+    end
+end
+checkHandprints()
+
+handprints.DescendantAdded:Connect(function(descendant)
+	if not handprintFound and descendant:IsA("BasePart") then
+		handprintFound = true
+		handprintLabel.Text = "Handprints : true"
+		handprintLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+	end
+end)
+
+local ghostOrb = workspace:FindFirstChild("GhostOrb")
+local ghostOrbLabel = Instance.new("TextLabel")
+ghostOrbLabel.Size = UDim2.new(0, 300, 0, 25)
+ghostOrbLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 3))
+ghostOrbLabel.BackgroundTransparency = 0
+ghostOrbLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ghostOrbLabel.TextScaled = true
+ghostOrbLabel.Font = Enum.Font.SourceSans
+ghostOrbLabel.Text = "GhostOrb : Scanning..."
+ghostOrbLabel.Parent = gui
+
+local ghostOrbFound = false
+local function checkGhostOrb()
+    if not ghostOrbFound and ghostOrb then
+        for _, obj in ipairs(ghostOrb:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                ghostOrbFound = true
+                ghostOrbLabel.Text = "GhostOrb : true"
+                ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+                break
+            end
+        end
+    end
+    if not ghostOrbFound then
+        ghostOrbLabel.Text = "GhostOrb : false"
+    end
+end
+checkGhostOrb()
+
+if ghostOrb then
+    ghostOrb.DescendantAdded:Connect(function(descendant)
+        if not ghostOrbFound and descendant:IsA("BasePart") then
+            ghostOrbFound = true
+            ghostOrbLabel.Text = "GhostOrb : true"
+            ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+        end
+    end)
+end
+
+local tempLabel = Instance.new("TextLabel")
+tempLabel.Size = UDim2.new(0, 300, 0, 25)
+tempLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 1))
+tempLabel.BackgroundTransparency = 0
+tempLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+tempLabel.TextColor3 = Color3.new(1.000000, 1.000000, 1.000000)
+tempLabel.TextScaled = true
+tempLabel.Font = Enum.Font.SourceSans
+tempLabel.Text = "GhostTemp : Loading..."
+tempLabel.Parent = gui
+
+local function updateTemperature()
+	local currentRoom = ghost:GetAttribute("CurrentRoom")
+	if currentRoom and rooms:FindFirstChild(currentRoom) then
+		local temp = rooms[currentRoom]:GetAttribute("Temperature")
+		tempLabel.Text = "GhostTemp : " .. tostring(temp)
+		if tonumber(temp) and temp < 0 then
+			tempLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+		else
+			tempLabel.TextColor3 = Color3.new(1, 1, 1)
+		end
+	else
+		tempLabel.Text = "GhostTemp : not found"
+		tempLabel.TextColor3 = Color3.new(1, 1, 1)
+	end
+end
+
+for i, attrName in ipairs(attributes) do
+	local label = Instance.new("TextLabel")
+	label.Size = UDim2.new(0, 300, 0, 25)
+	label.Position = UDim2.new(0.3, -150, 0, 30 * i)
+	label.BackgroundTransparency = 0
+	label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.TextScaled = true
+	label.Font = Enum.Font.SourceSans
+	label.Text = attrName .. " : Loading..."
+	label.Parent = gui
+	textLabels[attrName] = label
+
+	local function updateValue()
+		local value = ghost:GetAttribute(attrName)
+		label.Text = attrName .. " : " .. tostring(value)
+
+		if attrName == "Hunting" or attrName == "Headless" or attrName == "InLaser" then
+			label.TextColor3 = value == true and Color3.fromRGB(255, 100, 100) or Color3.new(1, 1, 1)
+		elseif attrName == "CurrentRoom" then
+			updateTemperature()
+		else
+			label.TextColor3 = Color3.new(1, 1, 1)
+		end
+	end
+
+	updateValue()
+    ghost:GetAttributeChangedSignal(attrName):Connect(updateValue)
+end
+
+local settings = {
+	showName = false,
+	showHighlight = false,
+}
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 300, 0, 275)
+frame.Position = UDim2.new(0.3, -150, 1, -110 * (#attributes - 0.7))
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.BorderSizePixel = 0
+frame.BackgroundTransparency = 0
+
+local textbox = Instance.new("TextBox", frame)
+textbox.PlaceholderText = "Item Number or all"
+textbox.Text = ""
+textbox.Size = UDim2.new(1, -20, 0, 25)
+textbox.Position = UDim2.new(0, 10, 0, 5)
+textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+textbox.TextColor3 = Color3.new(1,1,1)
+textbox.TextScaled = true
+
+local toggleName = Instance.new("TextButton", frame)
+toggleName.Text = "Number : false"
+toggleName.Size = UDim2.new(0.5, -15, 0, 25)
+toggleName.Position = UDim2.new(0, 10, 0, 35)
+toggleName.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleName.TextColor3 = Color3.new(1,1,1)
+toggleName.TextScaled = true
+
+local toggleHighlight = Instance.new("TextButton", frame)
+toggleHighlight.Text = "Highlight : false"
+toggleHighlight.Size = UDim2.new(0.5, -15, 0, 25)
+toggleHighlight.Position = UDim2.new(0.5, 5, 0, 35)
+toggleHighlight.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleHighlight.TextColor3 = Color3.new(1,1,1)
+toggleHighlight.TextScaled = true
+
+local bringButton = Instance.new("TextButton", frame)
+bringButton.Text = "Bring"
+bringButton.Size = UDim2.new(1, -20, 0, 25)
+bringButton.Position = UDim2.new(0, 10, 0, 65)
+bringButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+bringButton.TextColor3 = Color3.new(1,1,1)
+bringButton.TextScaled = true
+
+local ambientToggle = Instance.new("TextButton", frame)
+ambientToggle.Text = "Full bright : false"
+ambientToggle.Size = UDim2.new(1, -20, 0, 25)
+ambientToggle.Position = UDim2.new(0, 10, 0, 95)
+ambientToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+ambientToggle.TextColor3 = Color3.new(1, 1, 1)
+ambientToggle.TextScaled = true
+
+local highlightGhostToggle = Instance.new("TextButton", frame)
+highlightGhostToggle.Text = "Highlight Ghost : false"
+highlightGhostToggle.Size = UDim2.new(1, -20, 0, 25)
+highlightGhostToggle.Position = UDim2.new(0, 10, 0, 125)
+highlightGhostToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+highlightGhostToggle.TextColor3 = Color3.new(1, 1, 1)
+highlightGhostToggle.TextScaled = true
+
+local highlightGhostOrbToggle = Instance.new("TextButton", frame)
+highlightGhostOrbToggle.Text = "Highlight GhostOrb : false"
+highlightGhostOrbToggle.Size = UDim2.new(1, -20, 0, 25)
+highlightGhostOrbToggle.Position = UDim2.new(0, 10, 0, 155)
+highlightGhostOrbToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+highlightGhostOrbToggle.TextColor3 = Color3.new(1, 1, 1)
+highlightGhostOrbToggle.TextScaled = true
+
+local highlightHandprintToggle = Instance.new("TextButton", frame)
+highlightHandprintToggle.Text = "Highlight Handprint : false"
+highlightHandprintToggle.Size = UDim2.new(1, -20, 0, 25)
+highlightHandprintToggle.Position = UDim2.new(0, 10, 0, 185)
+highlightHandprintToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+highlightHandprintToggle.TextColor3 = Color3.new(1, 1, 1)
+highlightHandprintToggle.TextScaled = true
+
+local staminaToggle = Instance.new("TextButton", frame)
+staminaToggle.Text = "Inf stamina : false"
+staminaToggle.Size = UDim2.new(1, -20, 0, 25)
+staminaToggle.Position = UDim2.new(0, 10, 0, 215)
+staminaToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+staminaToggle.TextColor3 = Color3.new(1, 1, 1)
+staminaToggle.TextScaled = true
+
+local hideguiToggle = Instance.new("TextButton", frame)
+hideguiToggle.Text = "Hide gui"
+hideguiToggle.Size = UDim2.new(1, -20, 0, 25)
+hideguiToggle.Position = UDim2.new(0, 10, 0, 245)
+hideguiToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+hideguiToggle.TextColor3 = Color3.new(1, 1, 1)
+hideguiToggle.TextScaled = true
+
+local infiniteStaminaConnection
+local staminaEnabled = false
+local baseStamina
+
+local function activateInfiniteStamina()
+	if infiniteStaminaConnection then
+		infiniteStaminaConnection:Disconnect()
+	end
+
+	repeat task.wait() until player:GetAttribute("Stamina") ~= nil
+	baseStamina = player:GetAttribute("Stamina")
+
+	infiniteStaminaConnection = player:GetAttributeChangedSignal("Stamina"):Connect(function()
+		local currentStamina = player:GetAttribute("Stamina")
+		if currentStamina < baseStamina then
+			player:SetAttribute("Stamina", baseStamina)
+		end
+	end)
+end
+
+local function deactivateInfiniteStamina()
+	if infiniteStaminaConnection then
+		infiniteStaminaConnection:Disconnect()
+		infiniteStaminaConnection = nil
+	end
+end
+
+staminaToggle.MouseButton1Click:Connect(function()
+	staminaEnabled = not staminaEnabled
+	staminaToggle.Text = "Inf stamina : " .. tostring(staminaEnabled)
+
+	if staminaEnabled then
+		activateInfiniteStamina()
+	else
+		deactivateInfiniteStamina()
+	end
+end)
+
+local function addGhostBillboard()
+	local ghost = workspace:FindFirstChild("Ghost")
+	if not ghost then return end
+
+	local part = ghost:FindFirstChildWhichIsA("BasePart")
+	if not part then return end
+
+	local existing = part:FindFirstChild("GhostNameDisplay")
+	if existing then existing:Destroy() end
+
+	local billboard = Instance.new("BillboardGui", part)
+	billboard.Name = "GhostNameDisplay"
+	billboard.Adornee = part
+	billboard.Size = UDim2.new(0, 80, 0, 40)
+	billboard.StudsOffset = Vector3.new(0, 3, 0)
+	billboard.AlwaysOnTop = true
+
+	local label = Instance.new("TextLabel", billboard)
+	label.Size = UDim2.new(0.5, 0, 0.5, 0)
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.fromRGB(255, 0, 0)
+	label.TextStrokeTransparency = 0.3
+	label.TextScaled = true
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = "Ghost"
+end
+
+local function addGhostOrbBillboard()
+	local ghostOrb = workspace:FindFirstChild("GhostOrb")
+	if not ghostOrb then return end
+
+	local part = ghostOrb:FindFirstChildWhichIsA("BasePart")
+	if not part then return end
+
+	local existing = part:FindFirstChild("GhostOrbDisplay")
+	if existing then existing:Destroy() end
+
+	local billboard = Instance.new("BillboardGui", part)
+	billboard.Name = "GhostOrbDisplay"
+	billboard.Adornee = part
+	billboard.Size = UDim2.new(0, 80, 0, 40)
+	billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+	billboard.AlwaysOnTop = true
+
+	local label = Instance.new("TextLabel", billboard)
+	label.Size = UDim2.new(1, 0, 0.5, 0)
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextStrokeTransparency = 0.3
+	label.TextScaled = true
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = "GhostOrb"
+end
+
+local ghostOn = false
+highlightGhostToggle.MouseButton1Click:Connect(function()
+	ghostOn = not ghostOn
+	highlightGhostToggle.Text = "Highlight Ghost : " .. tostring(ghostOn)
+
+	local ghost = workspace:FindFirstChild("Ghost")
+	if ghost then
+		for _, child in ipairs(ghost:GetChildren()) do
+			if child:IsA("Highlight") then
+				child:Destroy()
+			elseif child:IsA("BasePart") then
+				local billboard = child:FindFirstChild("GhostNameDisplay")
+				if billboard then
+					billboard:Destroy()
+				end
+			end
+		end
+
+		if ghostOn then
+			local ghostHighlight = Instance.new("Highlight")
+			ghostHighlight.Adornee = ghost
+			ghostHighlight.FillColor = Color3.fromRGB(255, 0, 0)
+			ghostHighlight.OutlineColor = Color3.new(1, 1, 1)
+			ghostHighlight.OutlineTransparency = 0
+			ghostHighlight.Parent = ghost
+
+			addGhostBillboard()
+		end
+	end
+end)
+
+local orbOn = false
+highlightGhostOrbToggle.MouseButton1Click:Connect(function()
+	orbOn = not orbOn
+	highlightGhostOrbToggle.Text = "Highlight GhostOrb : " .. tostring(orbOn)
+
+	local ghostOrb = workspace:FindFirstChild("GhostOrb")
+	if ghostOrb then
+		for _, child in ipairs(ghostOrb:GetChildren()) do
+			if child:IsA("Highlight") then
+				child:Destroy()
+			elseif child:IsA("BasePart") then
+				local billboard = child:FindFirstChild("GhostOrbDisplay")
+				if billboard then
+					billboard:Destroy()
+				end
+			end
+		end
+
+		if orbOn then
+			local highlight = Instance.new("Highlight")
+			highlight.Adornee = ghostOrb
+			highlight.FillColor = Color3.fromRGB(255, 255, 255)
+			highlight.OutlineColor = Color3.new(1, 0, 0)
+			highlight.OutlineTransparency = 0
+			highlight.Parent = ghostOrb
+
+			ghostOrb.Transparency = 0
+
+            addGhostOrbBillboard()
+		end
+	end
+end)
+
+local handprintOn = false
+local function addHandprintBillboard(part)
+	if part:FindFirstChild("HandprintDisplay") then return end
+
+	local billboard = Instance.new("BillboardGui", part)
+	billboard.Name = "HandprintDisplay"
+	billboard.Adornee = part
+	billboard.Size = UDim2.new(0, 80, 0, 40)
+	billboard.StudsOffset = Vector3.new(0, 2, 0)
+	billboard.AlwaysOnTop = true
+
+	local label = Instance.new("TextLabel", billboard)
+	label.Size = UDim2.new(0.5, 0, 0.5, 0)
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.fromRGB(255, 100, 100)
+	label.TextStrokeTransparency = 0.3
+	label.TextScaled = true
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = "Handprint"
+end
+
+local function updateHandprintVisuals()
+	for _, part in ipairs(handprints:GetDescendants()) do
+		if part:IsA("BasePart") then
+			local existing = part:FindFirstChild("HandprintDisplay")
+			if existing then existing:Destroy() end
+
+			if handprintOn then
+				addHandprintBillboard(part)
+			end
+		end
+	end
+end
+
+handprints.DescendantAdded:Connect(function(desc)
+	if handprintOn and desc:IsA("BasePart") then
+		addHandprintBillboard(desc)
+	end
+end)
+
+highlightHandprintToggle.MouseButton1Click:Connect(function()
+	handprintOn = not handprintOn
+	highlightHandprintToggle.Text = "Highlight Handprint : " .. tostring(handprintOn)
+	updateHandprintVisuals()
+end)
+
+local ambientEnabled = false
+ambientToggle.MouseButton1Click:Connect(function()
+	ambientEnabled = not ambientEnabled
+	ambientToggle.Text = "Full bright : " .. tostring(ambientEnabled)
+
+	if ambientEnabled then
+		lighting.Ambient = Color3.new(1, 1, 1)
+	else
+		lighting.Ambient = Color3.new(0, 0, 0)
+	end
+end)
+
+local function refreshVisuals()
+	if not itemfolder then return end
+	for _, model in ipairs(itemfolder:GetChildren()) do
+		if model:IsA("Model") and model:FindFirstChildWhichIsA("BasePart") then
+			local basePart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart")
+			if not model.PrimaryPart then
+				model.PrimaryPart = basePart
+			end
+
+			local existing = basePart:FindFirstChild("NameDisplay")
+			if existing then existing:Destroy() end
+			for _, c in ipairs(model:GetChildren()) do
+				if c:IsA("Highlight") then c:Destroy() end
+			end
+
+			if settings.showName then
+				local billboard = Instance.new("BillboardGui", basePart)
+				billboard.Name = "NameDisplay"
+				billboard.Adornee = basePart
+				billboard.Size = UDim2.new(0, 50, 0, 50)
+				billboard.StudsOffset = Vector3.new(0, 2, 0)
+				billboard.AlwaysOnTop = true
+
+				local label = Instance.new("TextLabel", billboard)
+				label.Size = UDim2.new(1, 0, 0.5, 0)
+				label.Position = UDim2.new(0, 0, 0, 0)
+				label.BackgroundTransparency = 1
+				label.TextColor3 = Color3.new(1, 1, 1)
+				label.TextStrokeTransparency = 0
+				label.TextScaled = true
+				label.Font = Enum.Font.SourceSansBold
+				label.Text = model.Name
+			end
+
+			if settings.showHighlight then
+				local highlight = Instance.new("Highlight")
+				highlight.Adornee = model
+				highlight.FillColor = Color3.fromRGB(0, 255, 0)
+				highlight.OutlineColor = Color3.new(1, 1, 1)
+				highlight.OutlineTransparency = 0
+				highlight.Parent = model
+			end
+		end
+	end
+end
+
+local function bringItems(itemName)
+	if not itemfolder then return end
+	for _, model in ipairs(itemfolder:GetChildren()) do
+		if model:IsA("Model") and model:FindFirstChildWhichIsA("BasePart") then
+			if itemName == "all" or model.Name == itemName then
+				local basePart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart")
+				if not model.PrimaryPart then
+					model.PrimaryPart = basePart
+				end
+				model:SetPrimaryPartCFrame(root.CFrame * CFrame.new(0, 0, -5))
+			end
+		end
+	end
+end
+
+toggleName.MouseButton1Click:Connect(function()
+	settings.showName = not settings.showName
+	toggleName.Text = "Number : " .. (settings.showName and "true" or "false")
+	refreshVisuals()
+end)
+
+toggleHighlight.MouseButton1Click:Connect(function()
+	settings.showHighlight = not settings.showHighlight
+	toggleHighlight.Text = "Highlight : " .. (settings.showHighlight and "true" or "false")
+	refreshVisuals()
+end)
+
+bringButton.MouseButton1Click:Connect(function()
+	local name = textbox.Text
+	if name and name ~= "" then
+		bringItems(name)
+		refreshVisuals()
+	end
+end)
+
+refreshVisuals()
+
+local openGuiScreen = Instance.new("ScreenGui")
+openGuiScreen.Name = "OpenGuiButton"
+openGuiScreen.ResetOnSpawn = false
+openGuiScreen.Parent = coreGui
+
+local showGuiButton = Instance.new("TextButton")
+showGuiButton.Size = UDim2.new(0, 300, 0, 25)
+showGuiButton.Position = UDim2.new(0.3, -150, 0, 30)
+showGuiButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+showGuiButton.TextColor3 = Color3.new(1, 1, 1)
+showGuiButton.Text = "Show GUI"
+showGuiButton.TextScaled = true
+showGuiButton.Visible = false
+showGuiButton.Parent = openGuiScreen
+
+hideguiToggle.MouseButton1Click:Connect(function()
+	gui.Enabled = false
+	showGuiButton.Visible = true
+end)
+
+showGuiButton.MouseButton1Click:Connect(function()
+	gui.Enabled = true
+	showGuiButton.Visible = false
+end)
+
+local UserInputService = game:GetService("UserInputService")
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+	if gameProcessed then return end
+	if input.KeyCode == Enum.KeyCode.H then
+		gui.Enabled = not gui.Enabled
+	end
+end)
