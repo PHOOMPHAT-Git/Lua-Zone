@@ -301,25 +301,52 @@ local function updateTemperature()
 end
 
 -- 4. Attribute updates
+-- ก่อนลูปสร้าง listener ใดๆ
+local inLaserLocked = false
+
+-- 4. Attribute updates
 for _, attr in ipairs({"Age","Gender","Headless","Hunting","InLaser","FavoriteRoom","CurrentRoom"}) do
     -- initial
     local v = ghost:GetAttribute(attr)
-    textLabels[attr].Text = attr.." : "..tostring(v)
-    if attr=="Hunting" or attr=="Headless" or attr=="InLaser" then
-        textLabels[attr].TextColor3 = v==true and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
-    elseif attr=="CurrentRoom" then
+
+    if attr == "InLaser" then
+        if v then inLaserLocked = true end
+        textLabels[attr].Text = "InLaser : " .. tostring(inLaserLocked)
+        textLabels[attr].TextColor3 = inLaserLocked and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
+
+    elseif attr == "CurrentRoom" then
         updateTemperature()
+
+    else
+        textLabels[attr].Text = attr.." : "..tostring(v)
+        if attr=="Hunting" or attr=="Headless" then
+            textLabels[attr].TextColor3 = v and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
+        else
+            textLabels[attr].TextColor3 = Color3.new(1,1,1)
+        end
     end
+
     -- connect
     ghost:GetAttributeChangedSignal(attr):Connect(function()
         local val = ghost:GetAttribute(attr)
-        textLabels[attr].Text = attr.." : "..tostring(val)
-        if attr=="Hunting" or attr=="Headless" or attr=="InLaser" then
-            textLabels[attr].TextColor3 = val==true and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
-        elseif attr=="CurrentRoom" then
+
+        if attr == "InLaser" then
+            if val and not inLaserLocked then
+                inLaserLocked = true
+            end
+            textLabels[attr].Text = "InLaser : true"
+            textLabels[attr].TextColor3 = Color3.fromRGB(255,100,100)
+
+        elseif attr == "CurrentRoom" then
             updateTemperature()
+
         else
-            textLabels[attr].TextColor3 = Color3.new(1,1,1)
+            textLabels[attr].Text = attr.." : "..tostring(val)
+            if attr=="Hunting" or attr=="Headless" then
+                textLabels[attr].TextColor3 = val and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
+            else
+                textLabels[attr].TextColor3 = Color3.new(1,1,1)
+            end
         end
     end)
 end
