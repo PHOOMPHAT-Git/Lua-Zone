@@ -89,6 +89,7 @@ highlightItemsBtn.Position         = UDim2.new(0.0282,0,0.6638,0)
 
 local itemTextbox = Instance.new("TextBox", ItemFrame)
 itemTextbox.Name               = "TextBox"
+itemTextbox.Text               = ""
 itemTextbox.PlaceholderText    = "Item number or all"
 itemTextbox.TextColor3         = Color3.fromRGB(255, 255, 255)
 itemTextbox.TextScaled         = true
@@ -225,7 +226,7 @@ local function addHandprintBillboard(part)
     b.StudsOffset = Vector3.new(0,0,0)
     b.AlwaysOnTop = true
     local lbl = Instance.new("TextLabel", b)
-    lbl.Size               = UDim2.new(0.5,0,0.5,0)
+    lbl.Size               = UDim2.new(0.7,0,0.7,0)
     lbl.BackgroundTransparency = 1
     lbl.TextColor3         = Color3.fromRGB(255,100,100)
     lbl.TextScaled         = true
@@ -246,7 +247,7 @@ local function addGhostOrbBillboard()
         b.StudsOffset = Vector3.new(0,0,0)
         b.AlwaysOnTop = true
         local l = Instance.new("TextLabel", b)
-        l.Size                   = UDim2.new(0.5,0,0.5,0)
+        l.Size                   = UDim2.new(0.7,0,0.7,0)
         l.BackgroundTransparency = 1
         l.TextColor3             = Color3.fromRGB(255,100,100)
         l.TextScaled             = true
