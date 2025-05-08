@@ -41,7 +41,7 @@ attrLayout.Padding   = UDim.new(0.01,0)
 -- Attribute labels
 local attributeNames = {
     "Age","Gender","Headless","Hunting","InLaser",
-    "FavoriteRoom","CurrentRoom","GhostTemp","GhostOrb","Handprints"
+    "FavoriteRoom","CurrentRoom","GhostTemp","GhostOrb","Handprints","Writing","Wither"
 }
 local textLabels = {}
 
@@ -377,6 +377,110 @@ highlightItemsBtn.MouseButton1Click:Connect(function()
                 end
             end
         end
+    end
+end)
+
+-- 7. Writing scanning
+local writingLocked = false
+
+local function watchPartTransparency(part)
+    if not part:IsA("BasePart") then return end
+    part:GetPropertyChangedSignal("Transparency"):Connect(function()
+        updateWriting()
+    end)
+end
+
+function updateWriting()
+    if writingLocked then
+        textLabels.Writing.Text = "Writing : true"
+        textLabels.Writing.TextColor3 = Color3.fromRGB(255,100,100)
+        return
+    end
+
+    local found = false
+    for _, model in ipairs(itemfolder:GetChildren()) do
+        if model:IsA("Model") then
+            local pencil = model:FindFirstChild("Pencil")
+            if pencil then
+                for _, obj in ipairs(pencil:GetDescendants()) do
+                    watchPartTransparency(obj)
+
+                    if obj:IsA("BasePart") and obj.Transparency == 0 then
+                        found = true
+                        break
+                    end
+                end
+            end
+        end
+        if found then break end
+    end
+
+    if found then
+        writingLocked = true
+        textLabels.Writing.Text = "Writing : true"
+        textLabels.Writing.TextColor3 = Color3.fromRGB(255,100,100)
+    else
+        textLabels.Writing.Text = "Writing : false"
+        textLabels.Writing.TextColor3 = Color3.new(1,1,1)
+    end
+end
+updateWriting()
+itemfolder.ChildAdded:Connect(function(model)
+    if model:IsA("Model") then
+        model.ChildAdded:Connect(function(child)
+            if child.Name == "Pencil" then
+                child.DescendantAdded:Connect(watchPartTransparency)
+                child.DescendantRemoving:Connect(updateWriting)
+                updateWriting()
+            end
+        end)
+        local pencil = model:FindFirstChild("Pencil")
+        if pencil then
+            pencil.DescendantAdded:Connect(watchPartTransparency)
+            pencil.DescendantRemoving:Connect(updateWriting)
+            updateWriting()
+        end
+    end
+end)
+
+-- 8. Wither scanning
+local witherLocked = false
+local function updateWither()
+    if witherLocked then
+        textLabels.Wither.Text = "Wither : true"
+        textLabels.Wither.TextColor3 = Color3.fromRGB(255,100,100)
+        return
+    end
+
+    local found = false
+    for _, part in ipairs(itemfolder:GetDescendants()) do
+        if part.Name == "Petals" and part:IsA("BasePart") then
+            if part.Color == Color3.new(0, 0, 0) then
+                found = true
+                break
+            end
+        end
+    end
+
+    if found then
+        witherLocked = true
+        textLabels.Wither.Text = "Wither : true"
+        textLabels.Wither.TextColor3 = Color3.fromRGB(255,100,100)
+    else
+        textLabels.Wither.Text = "Wither : false"
+        textLabels.Wither.TextColor3 = Color3.new(1,1,1)
+    end
+end
+updateWither()
+for _, part in ipairs(itemfolder:GetDescendants()) do
+    if part.Name == "Petals" and part:IsA("BasePart") then
+        part:GetPropertyChangedSignal("Color"):Connect(updateWither)
+    end
+end
+itemfolder.DescendantAdded:Connect(function(desc)
+    if desc.Name == "Petals" and desc:IsA("BasePart") then
+        desc:GetPropertyChangedSignal("Color"):Connect(updateWither)
+        updateWither()
     end
 end)
 
