@@ -3,6 +3,8 @@ local character = player.Character or player.CharacterAdded:Wait()
 local root = character:WaitForChild("HumanoidRootPart")
 local coreGui = game:GetService("CoreGui")
 local workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local isMobile = UserInputService.TouchEnabled
 
 local lighting = game:GetService("Lighting")
 
@@ -18,6 +20,9 @@ if existingGui then existingGui:Destroy() end
 local OpenGuiGui = coreGui:FindFirstChild("OpenGuiButton")
 if OpenGuiGui then OpenGuiGui:Destroy() end
 
+local spacing = isMobile and 20 or 30
+local xOffset  = isMobile and -120 or -150
+
 local attributes = {"Age", "Headless", "Hunting", "InLaser", "Gender", "FavoriteRoom", "CurrentRoom"}
 local textLabels = {}
 
@@ -26,7 +31,7 @@ gui.Name = "GhostAttributesDisplay"
 
 local handprintLabel = Instance.new("TextLabel")
 handprintLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
-handprintLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 2))
+handprintLabel.Position = UDim2.new(0.3, xOffset, 0, spacing * (#attributes + 2))
 handprintLabel.BackgroundTransparency = 0
 handprintLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 handprintLabel.TextColor3 = Color3.new(1.000000, 1.000000, 1.000000)
@@ -64,7 +69,7 @@ end)
 local ghostOrb = workspace:FindFirstChild("GhostOrb")
 local ghostOrbLabel = Instance.new("TextLabel")
 ghostOrbLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
-ghostOrbLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 3))
+ghostOrbLabel.Position  = UDim2.new(0.3, xOffset, 0, spacing * (#attributes + 3))
 ghostOrbLabel.BackgroundTransparency = 0
 ghostOrbLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -103,7 +108,7 @@ end
 
 local tempLabel = Instance.new("TextLabel")
 tempLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
-tempLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 1))
+tempLabel.Position      = UDim2.new(0.3, xOffset, 0, spacing * (#attributes + 1))
 tempLabel.BackgroundTransparency = 0
 tempLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 tempLabel.TextColor3 = Color3.new(1.000000, 1.000000, 1.000000)
@@ -131,7 +136,7 @@ end
 for i, attrName in ipairs(attributes) do
 	local label = Instance.new("TextLabel")
 	label.Size = UDim2.new(0.15, 0, 0.025, 0)
-	label.Position = UDim2.new(0.3, -150, 0, 30 * i)
+    label.Position = UDim2.new(0.3, xOffset, 0, spacing * i)
 	label.BackgroundTransparency = 0
 	label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	label.TextColor3 = Color3.new(1, 1, 1)
