@@ -25,7 +25,7 @@ local gui = Instance.new("ScreenGui", coreGui)
 gui.Name = "GhostAttributesDisplay"
 
 local handprintLabel = Instance.new("TextLabel")
-handprintLabel.Size = UDim2.new(0, 300, 0, 25)
+handprintLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
 handprintLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 2))
 handprintLabel.BackgroundTransparency = 0
 handprintLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -63,7 +63,7 @@ end)
 
 local ghostOrb = workspace:FindFirstChild("GhostOrb")
 local ghostOrbLabel = Instance.new("TextLabel")
-ghostOrbLabel.Size = UDim2.new(0, 300, 0, 25)
+ghostOrbLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
 ghostOrbLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 3))
 ghostOrbLabel.BackgroundTransparency = 0
 ghostOrbLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -102,7 +102,7 @@ if ghostOrb then
 end
 
 local tempLabel = Instance.new("TextLabel")
-tempLabel.Size = UDim2.new(0, 300, 0, 25)
+tempLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
 tempLabel.Position = UDim2.new(0.3, -150, 0, 30 * (#attributes + 1))
 tempLabel.BackgroundTransparency = 0
 tempLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -130,7 +130,7 @@ end
 
 for i, attrName in ipairs(attributes) do
 	local label = Instance.new("TextLabel")
-	label.Size = UDim2.new(0, 300, 0, 25)
+	label.Size = UDim2.new(0.15, 0, 0.025, 0)
 	label.Position = UDim2.new(0.3, -150, 0, 30 * i)
 	label.BackgroundTransparency = 0
 	label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -164,7 +164,7 @@ local settings = {
 }
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 300, 0, 275)
+frame.Size = UDim2.new(0.15, 0, 0.27, 0)
 frame.Position = UDim2.new(0.3, -150, 1, -110 * (#attributes - 0.7))
 frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 frame.BorderSizePixel = 0
