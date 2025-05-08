@@ -228,7 +228,7 @@ local function addHandprintBillboard(part)
     local lbl = Instance.new("TextLabel", b)
     lbl.Size               = UDim2.new(0.7,0,0.7,0)
     lbl.BackgroundTransparency = 1
-    lbl.TextColor3         = Color3.fromRGB(255,100,100)
+    lbl.TextColor3         = Color3.new(1.000000, 0.949020, 0.211765)
     lbl.TextScaled         = true
     lbl.Font               = Enum.Font.SourceSansBold
     lbl.Text               = "Handprint"
@@ -249,7 +249,7 @@ local function addGhostOrbBillboard()
         local l = Instance.new("TextLabel", b)
         l.Size                   = UDim2.new(0.7,0,0.7,0)
         l.BackgroundTransparency = 1
-        l.TextColor3             = Color3.fromRGB(255,100,100)
+        l.TextColor3             = Color3.new(0.058824, 0.968627, 1.000000)
         l.TextScaled             = true
         l.Font                   = Enum.Font.SourceSansBold
         l.Text                   = "GhostOrb"
