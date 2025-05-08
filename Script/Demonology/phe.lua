@@ -66,7 +66,6 @@ handprints.DescendantAdded:Connect(function(descendant)
 	end
 end)
 
-local ghostOrb = workspace:FindFirstChild("GhostOrb")
 local ghostOrbLabel = Instance.new("TextLabel")
 ghostOrbLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
 ghostOrbLabel.Position  = UDim2.new(0.3, xOffset, 0, spacing * (#attributes + 3))
@@ -78,33 +77,32 @@ ghostOrbLabel.Font = Enum.Font.SourceSans
 ghostOrbLabel.Text = "GhostOrb : Scanning..."
 ghostOrbLabel.Parent = gui
 
-local ghostOrbFound = false
-local function checkGhostOrb()
-    if not ghostOrbFound and ghostOrb then
-        for _, obj in ipairs(ghostOrb:GetDescendants()) do
-            if obj:IsA("BasePart") then
-                ghostOrbFound = true
-                ghostOrbLabel.Text = "GhostOrb : true"
-                ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-                break
-            end
-        end
-    end
-    if not ghostOrbFound then
-        ghostOrbLabel.Text = "GhostOrb : false"
-    end
+local function updateGhostOrbLabel(found)
+    ghostOrbLabel.Text = "GhostOrb : " .. tostring(found)
+    ghostOrbLabel.TextColor3 = found and Color3.fromRGB(255,100,100) or Color3.new(1,1,1)
 end
-checkGhostOrb()
 
-if ghostOrb then
-    ghostOrb.DescendantAdded:Connect(function(descendant)
-        if not ghostOrbFound and descendant:IsA("BasePart") then
+local ghostOrbFound = false
+
+local function scanForGhostOrb()
+    if ghostOrbFound then return end
+    for _, desc in ipairs(workspace:GetDescendants()) do
+        if desc.Name == "GhostOrb" and desc:IsA("BasePart") then
             ghostOrbFound = true
-            ghostOrbLabel.Text = "GhostOrb : true"
-            ghostOrbLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            updateGhostOrbLabel(true)
+            return
         end
-    end)
+    end
+    updateGhostOrbLabel(false)
 end
+scanForGhostOrb()
+
+workspace.DescendantAdded:Connect(function(desc)
+    if not ghostOrbFound and desc.Name == "GhostOrb" and desc:IsA("BasePart") then
+        ghostOrbFound = true
+        updateGhostOrbLabel(true)
+    end
+end)
 
 local tempLabel = Instance.new("TextLabel")
 tempLabel.Size = UDim2.new(0.15, 0, 0.025, 0)
@@ -170,7 +168,10 @@ local settings = {
 
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(0.15, 0, 0.27, 0)
-frame.Position = UDim2.new(0.3, -150, 1, -110 * (#attributes - 0.7))
+frame.Position = UDim2.new(
+    0.3, xOffset,
+    0.65,   - (spacing * (#attributes + 4))
+)
 frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 frame.BorderSizePixel = 0
 frame.BackgroundTransparency = 0
@@ -577,8 +578,6 @@ showGuiButton.MouseButton1Click:Connect(function()
 	gui.Enabled = true
 	showGuiButton.Visible = false
 end)
-
-local UserInputService = game:GetService("UserInputService")
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then return end
