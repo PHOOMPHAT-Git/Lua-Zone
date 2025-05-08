@@ -222,7 +222,7 @@ local function addHandprintBillboard(part)
     b.Name        = "HandprintDisplay"
     b.Adornee     = part
     b.Size        = UDim2.new(0,80,0,40)
-    b.StudsOffset = Vector3.new(0,2,0)
+    b.StudsOffset = Vector3.new(0,0,0)
     b.AlwaysOnTop = true
     local lbl = Instance.new("TextLabel", b)
     lbl.Size               = UDim2.new(0.5,0,0.5,0)
@@ -231,6 +231,28 @@ local function addHandprintBillboard(part)
     lbl.TextScaled         = true
     lbl.Font               = Enum.Font.SourceSansBold
     lbl.Text               = "Handprint"
+end
+
+local function addGhostOrbBillboard()
+    local orbPart = Workspace:FindFirstChild("GhostOrb")
+    if orbPart and orbPart:IsA("Model") then
+        orbPart = orbPart:FindFirstChildWhichIsA("BasePart")
+    end
+    if orbPart and not orbPart:FindFirstChild("GhostOrbDisplay") then
+        local b = Instance.new("BillboardGui", orbPart)
+        b.Name        = "GhostOrbDisplay"
+        b.Adornee     = orbPart
+        b.Size        = UDim2.new(0,80,0,40)
+        b.StudsOffset = Vector3.new(0,0,0)
+        b.AlwaysOnTop = true
+        local l = Instance.new("TextLabel", b)
+        l.Size                   = UDim2.new(0.5,0,0.5,0)
+        l.BackgroundTransparency = 1
+        l.TextColor3             = Color3.fromRGB(255,100,100)
+        l.TextScaled             = true
+        l.Font                   = Enum.Font.SourceSansBold
+        l.Text                   = "GhostOrb"
+    end
 end
 
 -- 2. GhostOrb scanning
@@ -244,6 +266,7 @@ local function scanGhostOrb()
     for _, desc in ipairs(Workspace:GetDescendants()) do
         if desc.Name=="GhostOrb" and desc:IsA("BasePart") then
             ghostOrbFound = true
+            desc.Transparency = 0
             updateGhostOrb(true)
             return
         end
@@ -254,6 +277,7 @@ scanGhostOrb()
 Workspace.DescendantAdded:Connect(function(desc)
     if not ghostOrbFound and desc.Name=="GhostOrb" and desc:IsA("BasePart") then
         ghostOrbFound = true
+        desc.Transparency = 0
         updateGhostOrb(true)
     end
 end)
@@ -316,28 +340,6 @@ local function addGhostBillboard()
         l.TextScaled         = true
         l.Font               = Enum.Font.SourceSansBold
         l.Text               = "Ghost"
-    end
-end
-
-local function addGhostOrbBillboard()
-    local orb = Workspace:FindFirstChild("GhostOrb")
-    if orb then
-        local part = orb:FindFirstChildWhichIsA("BasePart")
-        if part then
-            local b = Instance.new("BillboardGui", part)
-            b.Name        = "GhostOrbDisplay"
-            b.Adornee     = part
-            b.Size        = UDim2.new(0,80,0,40)
-            b.StudsOffset = Vector3.new(0,2.5,0)
-            b.AlwaysOnTop = true
-            local l = Instance.new("TextLabel", b)
-            l.Size               = UDim2.new(1,0,0.5,0)
-            l.BackgroundTransparency = 1
-            l.TextColor3         = Color3.fromRGB(255,255,255)
-            l.TextScaled         = true
-            l.Font               = Enum.Font.SourceSansBold
-            l.Text               = "GhostOrb"
-        end
     end
 end
 
