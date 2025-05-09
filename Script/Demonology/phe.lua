@@ -51,7 +51,7 @@ for _, name in ipairs(attributeNames) do
     lbl.BackgroundColor3   = Color3.fromRGB(30,30,30)
     lbl.BackgroundTransparency = 0.4
     lbl.Size               = UDim2.new(1,0,0.0621,0)
-    lbl.Font               = Enum.Font.SourceSans
+    lbl.Font               = Enum.Font.SourceSansItalic
     lbl.Text               = name.." : Loading..."
     lbl.TextColor3         = Color3.new(1,1,1)
     lbl.TextScaled         = true
@@ -153,7 +153,7 @@ local PlayerFrame = Instance.new("Frame", UnderFrame)
 PlayerFrame.Name               = "Player"
 PlayerFrame.BackgroundColor3   = Color3.fromRGB(30,30,30)
 PlayerFrame.BackgroundTransparency = 0.4
-PlayerFrame.Size               = UDim2.new(1,0,0.549,0)
+PlayerFrame.Size               = UDim2.new(1, 0, 0.737286627, 0)
 
 local fullBrightBtn = Instance.new("TextButton", PlayerFrame)
 fullBrightBtn.Name             = "Full_bright"
@@ -163,8 +163,8 @@ fullBrightBtn.Font             = Enum.Font.SourceSansItalic
 fullBrightBtn.BackgroundColor3 = Color3.fromRGB(112,112,112)
 fullBrightBtn.TextColor3       = Color3.fromRGB(255, 255, 255)
 fullBrightBtn.BackgroundTransparency = 0.4
-fullBrightBtn.Size             = UDim2.new(0.9466,0,0.2606,0)
-fullBrightBtn.Position         = UDim2.new(0.028,0,0.375,0)
+fullBrightBtn.Size             = UDim2.new(0.946550667, 0, 0.199656367, 0)
+fullBrightBtn.Position         = UDim2.new(0.0280000605, 0, 0.279340565, 0)
 
 local hideGuiBtn = Instance.new("TextButton", PlayerFrame)
 hideGuiBtn.Name             = "Hide_gui"
@@ -174,8 +174,8 @@ hideGuiBtn.Font             = Enum.Font.SourceSansItalic
 hideGuiBtn.BackgroundColor3 = Color3.fromRGB(112,112,112)
 hideGuiBtn.TextColor3       = Color3.fromRGB(255, 255, 255)
 hideGuiBtn.BackgroundTransparency = 0.4
-hideGuiBtn.Size             = UDim2.new(0.9466,0,0.2634,0)
-hideGuiBtn.Position         = UDim2.new(0.028,0,0.689,0)
+hideGuiBtn.Size             = UDim2.new(0.946550906, 0, 0.198633611, 0)
+hideGuiBtn.Position         = UDim2.new(0.0279999543, 0, 0.757399976, 0)
 
 local infStaminaBtn = Instance.new("TextButton", PlayerFrame)
 infStaminaBtn.Name             = "Infinity_stamina"
@@ -185,8 +185,19 @@ infStaminaBtn.Font             = Enum.Font.SourceSansItalic
 infStaminaBtn.BackgroundColor3 = Color3.fromRGB(112,112,112)
 infStaminaBtn.TextColor3       = Color3.fromRGB(255, 255, 255)
 infStaminaBtn.BackgroundTransparency = 0.4
-infStaminaBtn.Size             = UDim2.new(0.9466,0,0.2593,0)
-infStaminaBtn.Position         = UDim2.new(0.0282,0,0.0695,0)
+infStaminaBtn.Size             = UDim2.new(0.946550906, 0, 0.199803725, 0)
+infStaminaBtn.Position         = UDim2.new(0.0281829759, 0, 0.0433522463, 0)
+
+local Auto_hide_huntBtn = Instance.new("TextButton", PlayerFrame)
+Auto_hide_huntBtn.Name             = "Auto_hide_hunt"
+Auto_hide_huntBtn.Text             = "Auto hide hunt : false"
+Auto_hide_huntBtn.TextScaled       = true
+Auto_hide_huntBtn.Font             = Enum.Font.SourceSansItalic
+Auto_hide_huntBtn.BackgroundColor3 = Color3.fromRGB(112,112,112)
+Auto_hide_huntBtn.TextColor3       = Color3.fromRGB(255, 255, 255)
+Auto_hide_huntBtn.BackgroundTransparency = 0.4
+Auto_hide_huntBtn.Size             = UDim2.new(0.946367621, 0, 0.193211511, 0)
+Auto_hide_huntBtn.Position         = UDim2.new(0.0281829759, 0, 0.524439275, 0)
 
 -- ===== Functions =====
 
@@ -495,6 +506,33 @@ itemfolder.DescendantAdded:Connect(function(desc)
     if desc.Name == "Petals" and desc:IsA("BasePart") then
         desc:GetPropertyChangedSignal("Color"):Connect(updateWither)
         updateWither()
+    end
+end)
+
+-- 9.Auto hide hunt
+local autoHideHuntOn     = false
+local lastHuntPosition   = nil
+Auto_hide_huntBtn.MouseButton1Click:Connect(function()
+    autoHideHuntOn = not autoHideHuntOn
+    Auto_hide_huntBtn.Text = "Auto hide hunt : " .. tostring(autoHideHuntOn)
+end)
+ghost:GetAttributeChangedSignal("Hunting"):Connect(function()
+    if not autoHideHuntOn then return end
+    local isHunting = ghost:GetAttribute("Hunting")
+    if isHunting then
+        lastHuntPosition = root.CFrame
+
+        local baseCamp = rooms["Base Camp"]
+        if baseCamp then
+            local feed = baseCamp:FindFirstChild("EnergyMonitorFeed")
+            if feed and feed:IsA("BasePart") then
+                root.CFrame = feed.CFrame
+            end
+        end
+    else
+        if lastHuntPosition then
+            root.CFrame = lastHuntPosition
+        end
     end
 end)
 
